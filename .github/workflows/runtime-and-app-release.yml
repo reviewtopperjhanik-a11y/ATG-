@@ -1,0 +1,53 @@
+name: AGT Runtime & Android Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      manifest_url:
+        description: "Verified HTTPS URL for the hosted AGT runtime manifest.json"
+        required: true
+        type: string
+      github_oauth_client_id:
+        description: "Public AGT GitHub OAuth App Client ID"
+        required: true
+        type: string
+
+jobs:
+  verify-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fetch and verify hosted ARM64 runtime manifest & SHA-256
+        env:
+          MANIFEST_URL: ${{ inputs.manifest_url }}
+        run: |
+          mkdir -p /tmp/agt-release-check
+          curl --fail --proto '=https' --tlsv1.2 -sSL "$MANIFEST_URL" -o /tmp/agt-release-check/manifest.json
+          python3 ops/runtime-release/build_runtime_manifest.py verify \
+            --manifest /tmp/agt-release-check/manifest.json \
+            --require-abi arm64-v8a
+
+      - name: Run unit and Robolectric tests
+        run: gradle :app:testDebugUnitTest
+
+      - name: Validate production build configuration & assemble release APK
+        env:
+          AGT_RUNTIME_MANIFEST_URL: ${{ inputs.manifest_url }}
+          AGT_GITHUB_OAUTH_CLIENT_ID: ${{ inputs.github_oauth_client_id }}
+          AGT_STRICT_RELEASE_CONFIG: "true"
+        run: |
+          gradle :app:validateReleaseConfig
+          gradle :app:assembleRelease

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Android Keystore keys are hardware-bound; never back up encrypted credential vaults or crash diagnostics. -->
+    <include domain="sharedpref" path="." />
+    <include domain="database" path="." />
+    <exclude domain="sharedpref" path="agt_gateway_vault.xml" />
+    <exclude domain="sharedpref" path="agt_github_vault.xml" />
+    <exclude domain="sharedpref" path="agt_extension_vault.xml" />
+    <exclude domain="file" path="diagnostics" />
+    <exclude domain="file" path="runtime/downloads" />
+    <exclude domain="file" path="runtime/staging" />
+</full-backup-content>

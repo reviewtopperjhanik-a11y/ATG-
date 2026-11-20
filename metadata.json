@@ -1,0 +1,8 @@
+{
+  "name": "Remix R8 ATG",
+  "description": "Read the documentation map and await further instructions before taking any action.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="sharedpref" path="." />
+        <include domain="database" path="." />
+        <exclude domain="sharedpref" path="agt_gateway_vault.xml" />
+        <exclude domain="sharedpref" path="agt_github_vault.xml" />
+        <exclude domain="sharedpref" path="agt_extension_vault.xml" />
+        <exclude domain="file" path="diagnostics" />
+        <exclude domain="file" path="runtime/downloads" />
+        <exclude domain="file" path="runtime/staging" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="sharedpref" path="." />
+        <include domain="database" path="." />
+        <exclude domain="sharedpref" path="agt_gateway_vault.xml" />
+        <exclude domain="sharedpref" path="agt_github_vault.xml" />
+        <exclude domain="sharedpref" path="agt_extension_vault.xml" />
+        <exclude domain="file" path="diagnostics" />
+        <exclude domain="file" path="runtime/downloads" />
+        <exclude domain="file" path="runtime/staging" />
+    </device-transfer>
+</data-extraction-rules>
